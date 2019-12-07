@@ -36,7 +36,7 @@ public class SudokuGrid extends Application {
 		int size = 9;
 		
 		for(int i = 0; i < size; i++) {
-			
+			//OK TESTAR IGEN 
 			for(int y = 0; y < size; y++) {
 				TextField nyRuta = new TextField();
 				nyRuta.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
