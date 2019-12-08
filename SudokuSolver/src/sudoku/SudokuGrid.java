@@ -5,12 +5,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -28,13 +25,14 @@ public class SudokuGrid extends Application {
 		loadUI(stage);
 		
 	}
-
+	
+	//building the UI
 	private void loadUI(Stage stage) {
-		VBox root = new VBox();
+		BorderPane root = new BorderPane();
 		TilePane root2 = new TilePane();
 		HBox bottomBox = new HBox();
 
-		bottomBox.setPadding(new Insets(5, 5, 5, 5));
+		bottomBox.setPadding(new Insets(5, 5, 10, 5));
 		bottomBox.setSpacing(10);
 		Button solveButton = new Button("Solve");
 		Button clearButton = new Button("Clear");
@@ -42,8 +40,8 @@ public class SudokuGrid extends Application {
 
 		root.setPrefSize(458, 500);
 		root.setMargin(root2, new Insets(4));
-		//root.setCenter(root2);
-		//root.setBottom(bottomBox);
+		root.setCenter(root2);
+		root.setBottom(bottomBox);
 
 		root2.setPrefColumns(9);
 		root2.setPrefRows(9);
@@ -55,31 +53,34 @@ public class SudokuGrid extends Application {
 				OneLetterTextField nyRuta = new OneLetterTextField();
 				nyRuta.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
 
-				// Sätter bakgrundsfärgen av textfields till orange vid rätt position.
+				//Set color of the textfield square to orange if it's in the correct position 
 				if ((i < 3 && y < 3) || (i > 5 && y < 3) || (i > 5 && y > 5) || (i < 3 && y > 5)
 						|| (i > 2 && i < 6 && y > 2 && y < 6)) {
 					nyRuta.setStyle("-fx-control-inner-background: #EC7425");
 				}
 				matrixTextField[i][y] = nyRuta;
+				
 				nyRuta.setPrefHeight(50);
 				nyRuta.setPrefWidth(50);
 				nyRuta.setAlignment(Pos.CENTER);
-				// nyRuta.setEditable(false);
-				root.getChildren().add(nyRuta);
+
 				root2.getChildren().add(nyRuta);
 			}
 
 		}
-
+		
+		//When you press the solve button
 		solveButton.setOnAction(event -> {
 			solve();
 		});
-
+		
+		//When you press the clear button
 		clearButton.setOnAction(event -> {
 			clear();
 		});
 
 		Scene scene = new Scene(root);
+		stage.setResizable(false);
 		stage.setTitle("Sudoku Solver");
 		stage.setScene(scene);
 		stage.show();
@@ -88,15 +89,16 @@ public class SudokuGrid extends Application {
 	private void solve() {
 		for (int i = 0; i < 9; i++) {
 			for (int y = 0; y < 9; y++) {
-				if(matrixTextField[i][y].getLength() == 1) { //kan endast skriva in 0-9. Checkar om rutan är tom eller om det finns ett nr.
-					sudoku.add(i, y, Integer.valueOf(matrixTextField[i][y].getText()));
+				if(matrixTextField[i][y].getLength() == 1) { //Check if there's a number in the square.
+					//add all the values to the matrix that we will use in the SudokuBrain class
+					sudoku.add(i, y, Integer.valueOf(matrixTextField[i][y].getText())); 
 				}
 				
 			}
 		}
 	}
 	private void clear() {
-		sudoku.printAll(); //testar just nu bara....
+		sudoku.printAll(); //Just testing right now.
 	}
 	
 	public static void main(String[] args) {
