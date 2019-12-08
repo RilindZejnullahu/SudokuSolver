@@ -98,7 +98,16 @@ public class SudokuGrid extends Application {
 		}
 	}
 	private void clear() {
-		sudoku.printAll(); //Just testing right now.
+		for (int i = 0; i < 9; i++) {
+			for (int y = 0; y < 9; y++) {
+				if(matrixTextField[i][y].getLength() == 1) { //Check if there's a number in the square.
+					matrixTextField[i][y].setText("");
+					sudoku.remove(i, y); 
+				
+				}
+				
+			}
+		}
 	}
 	
 	public static void main(String[] args) {

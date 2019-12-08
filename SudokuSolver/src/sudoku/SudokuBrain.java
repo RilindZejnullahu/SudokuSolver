@@ -6,6 +6,9 @@ public class SudokuBrain {
 	public void add(int row, int col, int newValue) {
 		sudokuValues[row][col] = newValue;
 	}
+	public void remove(int row, int col) {
+		sudokuValues[row][col] = 0;
+	}
 
 	public boolean solve() {
 		return true;
