@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -29,7 +30,7 @@ public class SudokuGrid extends Application {
 	}
 
 	private void loadUI(Stage stage) {
-		BorderPane root = new BorderPane();
+		VBox root = new VBox();
 		TilePane root2 = new TilePane();
 		HBox bottomBox = new HBox();
 
@@ -41,8 +42,12 @@ public class SudokuGrid extends Application {
 
 		root.setPrefSize(458, 500);
 		root.setMargin(root2, new Insets(4));
-		root.setCenter(root2);
-		root.setBottom(bottomBox);
+		//root.setCenter(root2);
+		//root.setBottom(bottomBox);
+
+		root2.setPrefColumns(9);
+		root2.setPrefRows(9);
+
 
 		// Building the sudoku 9x9 matrix
 		for (int i = 0; i < 9; i++) {
@@ -60,7 +65,7 @@ public class SudokuGrid extends Application {
 				nyRuta.setPrefWidth(50);
 				nyRuta.setAlignment(Pos.CENTER);
 				// nyRuta.setEditable(false);
-
+				root.getChildren().add(nyRuta);
 				root2.getChildren().add(nyRuta);
 			}
 
@@ -74,7 +79,7 @@ public class SudokuGrid extends Application {
 			clear();
 		});
 
-		Scene scene = new Scene(root, 458, 500);
+		Scene scene = new Scene(root);
 		stage.setTitle("Sudoku Solver");
 		stage.setScene(scene);
 		stage.show();

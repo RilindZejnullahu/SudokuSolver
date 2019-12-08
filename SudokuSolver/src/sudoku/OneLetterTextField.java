@@ -19,7 +19,7 @@ public class OneLetterTextField extends TextField {
 	}
 
 	private boolean matches(String text) {
-		return text.isEmpty() || (getText().length() < 1) && text.matches("[0-9]");
+		return text.isEmpty() || (getText().length() < 1) && text.matches("[1-9]");
 	}
 
 }
