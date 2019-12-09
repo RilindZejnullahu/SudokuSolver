@@ -25,54 +25,75 @@ public class SudokuBrain {
 
 	}
 
-	// FUNKAR INTE
-	private boolean solve(int row, int col) {
+	/* SKA SKRIVA PSEUDOKODEN FINARE.
+	 * 1. Om rutan är tom kontrollera rutan för varje siffra 1-9 om checkAll är true
+	 * Om true, return true, gå till solve(nästa cell) kontrollera för edge
+	 * fall(sista col, sista rad&col)
+	 * 
+	 * Om false, sätt rutan till 0, retrun false
+	 * 
+	 * 2. Om rutan är inte tom kontrollera checkAll Om true, return true, gå till
+	 * solve(nästa cell) kontrollera för edge fall(sista col, sista rad&col)
+	 * 
+	 * Annars false
+	 */
 
+	private boolean solve(int row, int col) {
 		if (sudokuValues[row][col] == 0) {
-			for (int i = 1; i <= 9; i++) {
-				if (checkAll(row, col)) {
+			if (col == 8 && row == 8) {
+				for (int i = 1; i <= 9; i++) {
 					sudokuValues[row][col] = i;
-					if (col == 8 && row == 8) {
+					if (checkAll(row, col)) {
 						return true;
-					} else if (col == 8) {
-						if (solve(row + 1, 0)) {
-							return true;
-						}
-					} else {
-						if (solve(row, col + 1)) {
-							return true;
+					}
+				}
+				return false;
+			} else {
+
+				for (int i = 1; i <= 9; i++) {
+					sudokuValues[row][col] = i;
+					if (checkAll(row, col)) {
+						if (col == 8) {
+							if (solve(row + 1, 0)) {
+								return true;
+							}
+
+						} else {
+							if (solve(row, col + 1)) {
+								return true;
+							}
+
 						}
 					}
-				} else {
-					sudokuValues[row][col] = 0;
-					return false;
+
 				}
+				sudokuValues[row][col] = 0;
+				return false;
+
 			}
 
-		}
-
-		else if (sudokuValues[row][col] != 0) {
-			if (checkAll(row, col)) {
-				if (col == 8 && row == 8) {
-					return true;
-				} else if (col == 8) {
+		} else {
+			// kolla för när det finns siffror
+			if (col == 8 && row == 8) {
+				return checkAll(row, col);
+			}
+			if(checkAll(row, col)) {
+				if(col == 8) {
 					return solve(row + 1, 0);
-				} else {
+				}
+				else {
 					return solve(row, col + 1);
 				}
 			}
+			//OM SUDOKUN ÄR OMÖJLIG KOMMER HIT
+			System.out.println("a");
+			return false;
 		}
-		return false;
-
 	}
 
 	// Check if value already exists in the row. Return true if value doesn't exist
 	// in the row
 	private boolean checkRow(int row, int value) {
-		/*
-		 * int i = 0; while (i < 9 && value != sudokuValues[row][i]) { i++; } return i
-		 * == 9;
-		 */
 
 		for (int i = 0; i < 9; i++) {
 			if (sudokuValues[row][i] == value) {
@@ -86,11 +107,6 @@ public class SudokuBrain {
 	// Check if value already exists in the col. Return true if value doesn't exist
 	// in the col
 	private boolean checkCol(int col, int value) {
-		/*
-		 * int i = 0; while (i < 9 && value != sudokuValues[i][col]) { i++; } return i
-		 * == 9;
-		 */
-
 		for (int i = 0; i < 9; i++) {
 			if (sudokuValues[i][col] == value) {
 				return false;
@@ -102,7 +118,7 @@ public class SudokuBrain {
 
 	// Check if value already exists in the 3x3 box, Return true if value doesn't
 	// exist in the box
-	private boolean check3x3(int row, int col, int value) { // row,col,value
+	private boolean check3x3(int row, int col, int value) { 
 
 		for (int i = (row / 3) * 3; i < (row / 3 + 1) * 3; i++) {
 			for (int y = (col / 3) * 3; y < (col / 3 + 1) * 3; y++) {
@@ -116,11 +132,6 @@ public class SudokuBrain {
 	}
 
 	private boolean checkAll(int row, int col) {
-		/*
-		 * int nr = sudokuValues[y][x]; return (checkRow(row, nr) && checkCol(col, nr)
-		 * && check3x3(row, col, nr);
-		 */
-
 		int nr = sudokuValues[row][col];
 		sudokuValues[row][col] = 0;
 		if (checkRow(row, nr) && checkCol(col, nr) && check3x3(row, col, nr)) {
@@ -133,11 +144,11 @@ public class SudokuBrain {
 
 	}
 
-	public void printAll() {
-		for (int i = 0; i < 9; i++) {
-			for (int y = 0; y < 9; y++) {
-				System.out.println("Row: " + (i + 1) + " col: " + (y + 1) + " has the value: " + sudokuValues[i][y]);
-			}
-		}
-	}
+//	public void printAll() {
+//		for (int i = 0; i < 9; i++) {
+//			for (int y = 0; y < 9; y++) {
+//				System.out.println("Row: " + (i + 1) + " col: " + (y + 1) + " has the value: " + sudokuValues[i][y]);
+//			}
+//		}
+//	}
 }

@@ -94,14 +94,18 @@ public class SudokuGrid extends Application {
 				}
 			}
 		}
-		sudoku.printAll(); //test
-		sudoku.solve();
-		int [][] temp = sudoku.test();
-		
-		for (int i = 0; i < 9; i++) {
-			for (int y = 0; y < 9; y++) {
-				matrixTextField[i][y].setText(String.valueOf(temp[i][y]));
+		//sudoku.printAll(); //test
+		if(sudoku.solve()) {
+			int [][] temp = sudoku.test();
+			
+			for (int i = 0; i < 9; i++) {
+				for (int y = 0; y < 9; y++) {
+					matrixTextField[i][y].setText(String.valueOf(temp[i][y]));
+				}
 			}
+		}
+		else {
+			System.out.println("ömölgt");
 		}
 
 	}
