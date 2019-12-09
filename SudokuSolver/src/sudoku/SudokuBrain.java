@@ -15,7 +15,7 @@ public class SudokuBrain {
 		sudokuValues[row][col] = 0;
 	}
 
-	public int[][] test() {
+	public int[][] getSudokuMatrix() {
 		return this.sudokuValues;
 
 	}
@@ -25,10 +25,10 @@ public class SudokuBrain {
 
 	}
 
-	/* SKA SKRIVA PSEUDOKODEN FINARE.
-	 * 1. Om rutan är tom kontrollera rutan för varje siffra 1-9 om checkAll är true
-	 * Om true, return true, gå till solve(nästa cell) kontrollera för edge
-	 * fall(sista col, sista rad&col)
+	/*
+	 * SKA SKRIVA PSEUDOKODEN FINARE. 1. Om rutan är tom kontrollera rutan för varje
+	 * siffra 1-9 om checkAll är true Om true, return true, gå till solve(nästa
+	 * cell) kontrollera för edge fall(sista col, sista rad&col)
 	 * 
 	 * Om false, sätt rutan till 0, retrun false
 	 * 
@@ -77,15 +77,14 @@ public class SudokuBrain {
 			if (col == 8 && row == 8) {
 				return checkAll(row, col);
 			}
-			if(checkAll(row, col)) {
-				if(col == 8) {
+			if (checkAll(row, col)) {
+				if (col == 8) {
 					return solve(row + 1, 0);
-				}
-				else {
+				} else {
 					return solve(row, col + 1);
 				}
 			}
-			//OM SUDOKUN ÄR OMÖJLIG KOMMER HIT
+			// OM SUDOKUN ÄR OMÖJLIG KOMMER HIT
 			System.out.println("a");
 			return false;
 		}
@@ -94,7 +93,6 @@ public class SudokuBrain {
 	// Check if value already exists in the row. Return true if value doesn't exist
 	// in the row
 	private boolean checkRow(int row, int value) {
-
 		for (int i = 0; i < 9; i++) {
 			if (sudokuValues[row][i] == value) {
 				return false;
@@ -118,7 +116,7 @@ public class SudokuBrain {
 
 	// Check if value already exists in the 3x3 box, Return true if value doesn't
 	// exist in the box
-	private boolean check3x3(int row, int col, int value) { 
+	private boolean check3x3(int row, int col, int value) {
 
 		for (int i = (row / 3) * 3; i < (row / 3 + 1) * 3; i++) {
 			for (int y = (col / 3) * 3; y < (col / 3 + 1) * 3; y++) {
@@ -128,27 +126,18 @@ public class SudokuBrain {
 			}
 		}
 		return true;
-
 	}
 
+	// Check if all the other checks are true (row, col, 3z3)
+	// return true, if all the other checks are true. Else false
 	private boolean checkAll(int row, int col) {
-		int nr = sudokuValues[row][col];
-		sudokuValues[row][col] = 0;
-		if (checkRow(row, nr) && checkCol(col, nr) && check3x3(row, col, nr)) {
-			sudokuValues[row][col] = nr;
-			return true;
-		} else {
-			sudokuValues[row][col] = nr;
-			return false;
-		}
+		int saveValue = sudokuValues[row][col];
+		sudokuValues[row][col] = 0; // 0 to be able to check all alternatives
 
+		boolean check = checkRow(row, saveValue) && checkCol(col, saveValue) && check3x3(row, col, saveValue);
+		sudokuValues[row][col] = saveValue;
+		
+		return check;
 	}
 
-//	public void printAll() {
-//		for (int i = 0; i < 9; i++) {
-//			for (int y = 0; y < 9; y++) {
-//				System.out.println("Row: " + (i + 1) + " col: " + (y + 1) + " has the value: " + sudokuValues[i][y]);
-//			}
-//		}
-//	}
 }

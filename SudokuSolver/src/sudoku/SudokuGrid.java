@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -14,13 +16,11 @@ import javafx.stage.Stage;
 
 public class SudokuGrid extends Application {
 	SudokuBrain sudoku;
-	OneLetterTextField oneIntegerOnly;
 	OneLetterTextField[][] matrixTextField;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		sudoku = new SudokuBrain();
-		oneIntegerOnly = new OneLetterTextField();
 		matrixTextField = new OneLetterTextField[9][9];
 		loadUI(stage);
 		
@@ -28,18 +28,19 @@ public class SudokuGrid extends Application {
 	
 	//building the UI
 	private void loadUI(Stage stage) {
+		//Components we need for the UI
 		BorderPane root = new BorderPane();
 		TilePane root2 = new TilePane();
 		HBox bottomBox = new HBox();
 
-		bottomBox.setPadding(new Insets(5, 5, 10, 5));
-		bottomBox.setSpacing(10);
 		Button solveButton = new Button("Solve");
 		Button clearButton = new Button("Clear");
+		bottomBox.setPadding(new Insets(5, 5, 10, 5));
+		bottomBox.setSpacing(10);
 		bottomBox.getChildren().addAll(solveButton, clearButton);
 
+		BorderPane.setMargin(root2, new Insets(4));
 		root.setPrefSize(458, 500);
-		root.setMargin(root2, new Insets(4));
 		root.setCenter(root2);
 		root.setBottom(bottomBox);
 
@@ -94,18 +95,23 @@ public class SudokuGrid extends Application {
 				}
 			}
 		}
-		//sudoku.printAll(); //test
+		//if it's possible to solve
 		if(sudoku.solve()) {
-			int [][] temp = sudoku.test();
-			
+			int [][] temp = sudoku.getSudokuMatrix();
 			for (int i = 0; i < 9; i++) {
 				for (int y = 0; y < 9; y++) {
 					matrixTextField[i][y].setText(String.valueOf(temp[i][y]));
 				}
 			}
 		}
+		//if it's impossible to solve
 		else {
-			System.out.println("ömölgt");
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("Impossible to solve!");
+			alert.setContentText("Make sure your numbers are correct");
+
+			alert.showAndWait();
 		}
 
 	}
