@@ -51,7 +51,7 @@ public class SudokuGrid extends Application {
 		for (int i = 0; i < 9; i++) {
 			for (int y = 0; y < 9; y++) {
 				OneLetterTextField nyRuta = new OneLetterTextField();
-				nyRuta.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
+				nyRuta.setFont(Font.font("Verdana", FontWeight.NORMAL, 26));
 
 				//Set color of the textfield square to orange if it's in the correct position 
 				if ((i < 3 && y < 3) || (i > 5 && y < 3) || (i > 5 && y > 5) || (i < 3 && y > 5)
@@ -59,7 +59,6 @@ public class SudokuGrid extends Application {
 					nyRuta.setStyle("-fx-control-inner-background: #EC7425");
 				}
 				matrixTextField[i][y] = nyRuta;
-				
 				nyRuta.setPrefHeight(50);
 				nyRuta.setPrefWidth(50);
 				nyRuta.setAlignment(Pos.CENTER);
@@ -93,9 +92,18 @@ public class SudokuGrid extends Application {
 					//add all the values to the matrix that we will use in the SudokuBrain class
 					sudoku.add(i, y, Integer.valueOf(matrixTextField[i][y].getText())); 
 				}
-				
 			}
 		}
+		sudoku.printAll(); //test
+		sudoku.solve();
+		int [][] temp = sudoku.test();
+		
+		for (int i = 0; i < 9; i++) {
+			for (int y = 0; y < 9; y++) {
+				matrixTextField[i][y].setText(String.valueOf(temp[i][y]));
+			}
+		}
+
 	}
 	private void clear() {
 		for (int i = 0; i < 9; i++) {
