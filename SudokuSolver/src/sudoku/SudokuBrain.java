@@ -25,21 +25,57 @@ public class SudokuBrain {
 
 	}
 
-	/*
-	 * SKA SKRIVA PSEUDOKODEN FINARE. 1. Om rutan är tom kontrollera rutan för varje
-	 * siffra 1-9 om checkAll är true Om true, return true, gå till solve(nästa
-	 * cell) kontrollera för edge fall(sista col, sista rad&col)
-	 * 
-	 * Om false, sätt rutan till 0, retrun false
-	 * 
-	 * 2. Om rutan är inte tom kontrollera checkAll Om true, return true, gå till
-	 * solve(nästa cell) kontrollera för edge fall(sista col, sista rad&col)
-	 * 
-	 * Annars false
-	 */
 
 	private boolean solve(int row, int col) {
-		
+		if (sudokuValues[row][col] == 0) {
+			if (col == 8 && row == 8) {
+				for (int i = 1; i <= 9; i++) {
+					sudokuValues[row][col] = i;
+					if (checkAll(row, col)) {
+						return true;
+					}
+				}
+				return false;
+			} else {
+
+				for (int i = 1; i <= 9; i++) {
+					sudokuValues[row][col] = i;
+					if (checkAll(row, col)) {
+						if (col == 8) {
+							if (solve(row + 1, 0)) {
+								return true;
+							}
+
+						} else {
+							if (solve(row, col + 1)) {
+								return true;
+							}
+
+						}
+					}
+
+				}
+				sudokuValues[row][col] = 0;
+				return false;
+
+			}
+
+		} else {
+			// kolla för när det finns siffror
+			if (col == 8 && row == 8) {
+				return checkAll(row, col);
+			}
+			if (checkAll(row, col)) {
+				if (col == 8) {
+					return solve(row + 1, 0);
+				} else {
+					return solve(row, col + 1);
+				}
+			}
+			// OM SUDOKUN ÄR OMÖJLIG KOMMER HIT
+			System.out.println("a");
+			return false;
+		}
 	}
 
 	// Check if value already exists in the row. Return true if value doesn't exist
