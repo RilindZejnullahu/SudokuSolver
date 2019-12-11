@@ -75,44 +75,12 @@ public class SudokuBrain {
 
 	}
 	
-	//TAGEN FRÅN GOOGLE
-	String f(int[][] b){
-		int[] a = Stream.of(b) //we start with a stream of objects Stream<int[]>
-                .flatMapToInt(IntStream::of) //we I'll map each int[] to IntStream
-                .toArray(); //we're now IntStream, just collect the ints to array.
-		  String P="0121213121213121214",                         // Both lines and rows are repeated according to this pattern.
-		         R[]={"╔═╤╦╗","║ │║║x","╟─┼╫╢","╠═╪╬╣","╚═╧╩╝"},  // Characters found on each line.
-		                                                          //   (note the 'x')
-		         r="";                                            // The string under construction
-		  for (int X: P.getBytes()) {                             // For each line,
-		    for (int x:                                           //  For each character in the pattern,
-		         P.replace("1",R[X-=48].length()>5?"151":"111")   //    *but* with a cell width of 3,
-		                                                          //    and with an optional character ('x')
-		         .getBytes())
-		      r+=R[X].charAt(x-48);                               //   append the real mapped character
-		    r+="\n";                                              //  then append a new line
-		  }
-		  for(int i:a)                                            // For each number in the input
-		    r = r.replaceFirst("x",i>0?""+i:" ");                 //  replace the first 'x' with that number.
-		                                                          //    (or space if zero)
-		  return r;                                               // Return the constructed string.
-		}
-	
 	private boolean solve(int row, int col) {
 		// If the square is empty
 		if (sudokuNumbers[row][col] == 0) {
 			for (int i = 1; i <= 9; i++) {
 				sudokuNumbers[row][col] = i;
-				if(SudokuGrid.print) {
-					try {
-						Thread.sleep(SudokuGrid.delay);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					System.out.println(f(sudokuNumbers));
-				}
-
+	
 				if (checkAll(row, col)) {
 					if (col == 8 && row == 8) {
 						return true;

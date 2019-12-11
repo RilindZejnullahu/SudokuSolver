@@ -30,14 +30,10 @@ import javafx.stage.Stage;
 
 public class SudokuGrid extends Application {
 	private SudokuBrain sudoku;
-	public static boolean print;
-	public static int delay;
 	public static OneLetterTextField[][] matrixTextField;
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		delay = 0;
-		print = false;
 		matrixTextField = new OneLetterTextField[9][9];
 		sudoku = new SudokuBrain();
 		loadUI(stage);
@@ -53,16 +49,10 @@ public class SudokuGrid extends Application {
 
 		Button solveButton = new Button("Solve");
 		Button clearButton = new Button("Clear");
-		Button loadButton  = new Button("Load");
-		CheckBox printCheckBox  = new CheckBox("Print");
-		TextField delayText = new TextField();
-		delayText.textProperty().addListener((observable, oldValue, newValue) -> {
-			delay = Integer.valueOf(newValue);
-		});
-		delayText.setVisible(false);
+
 		bottomBox.setPadding(new Insets(5, 5, 10, 5));
 		bottomBox.setSpacing(10);
-		bottomBox.getChildren().addAll(solveButton, clearButton, loadButton, printCheckBox, delayText);
+		bottomBox.getChildren().addAll(solveButton, clearButton);
 
 		BorderPane.setMargin(root2, new Insets(4));
 		root.setPrefSize(458, 500);
@@ -76,14 +66,16 @@ public class SudokuGrid extends Application {
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
 				OneLetterTextField nyRuta = new OneLetterTextField();
+
 				nyRuta.setFont(Font.font("Verdana", FontWeight.NORMAL, 26));
 
 				// Set color of the textfield square to orange if it's in the correct position
 				if ((row < 3 && col < 3) || (row > 5 && col < 3) || (row > 5 && col > 5) || (row < 3 && col > 5)
 						|| (row > 2 && row < 6 && col > 2 && col < 6)) {
-					nyRuta.setStyle("-fx-control-inner-background: #EC7425");
+					nyRuta.setStyle("-fx-control-inner-background: #EC7425;");
 				}
 				matrixTextField[row][col] = nyRuta;
+
 				nyRuta.setPrefHeight(50);
 				nyRuta.setPrefWidth(50);
 				nyRuta.setAlignment(Pos.CENTER);
@@ -107,65 +99,9 @@ public class SudokuGrid extends Application {
 		clearButton.setOnAction(event -> {
 			clear(true);
 		});
-		printCheckBox.setOnAction(event -> {
-			delayText.setVisible(!print);
-			print = printCheckBox.isSelected();
-		});
-		
 
-		loadButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            
-            public void handle(ActionEvent event) {
-       		 int[][] testMatrix = new int[9][9];
-    		 testMatrix[0][0] = 6;
-    		 
-                BorderPane secondaryLayout = new BorderPane();
-                HBox bottomBox = new HBox();
-                Button selectButton = new Button("Select");
-                bottomBox.getChildren().addAll(selectButton);
-                secondaryLayout.setBottom(bottomBox);
-                Scene secondScene = new Scene(secondaryLayout, 230, 400);
- 
-                // New window (Stage)
-                Stage newWindow = new Stage();
-                newWindow.setTitle("Second Stage");
-                newWindow.setScene(secondScene);
-                
-                ObservableList<String> items = FXCollections.observableArrayList("matris1", "matris2");
-                ListView<String> listView = new ListView<String>(items);
-                
+	}
 
-                listView.getSelectionModel().getSelectedItem();
-                secondaryLayout.setCenter(listView);
-                // Set position of second window, related to primary window.
-                newWindow.setX(stage.getX() + 485);
-                newWindow.setY(stage.getY() + 100);
- 
-                newWindow.show();
-                
-        		selectButton.setOnAction(event2 -> {
-        			for (int row = 0; row < 9; row++) {
-        				for (int col = 0; col < 9; col++) {
-        					if(testMatrix[row][col] > 0 ) {
-        						matrixTextField[row][col].setText(String.valueOf(testMatrix[row][col]));
-        					}	
-        				}
-        			}
-
-        		});
-                
-            }
-            
-            
-            
-        });
-		
-
-    }
-
-	
-	
 	private void solve() {
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
@@ -178,7 +114,7 @@ public class SudokuGrid extends Application {
 		}
 		// Check before trying to solve. Return false if colliding numbers.
 		// Solve the sudoku. Return true if solvable.
-		
+
 		if (sudoku.checkBeforeSolve() && sudoku.solve()) {
 			int[][] newSudokuNumbers = sudoku.getSudokuMatrix();
 			for (int row = 0; row < 9; row++) {
@@ -192,7 +128,6 @@ public class SudokuGrid extends Application {
 			// Clear all values, so you can change values if wrong without pressing Clear
 			unsolvableMessageAndClear();
 		}
-		
 
 	}
 
