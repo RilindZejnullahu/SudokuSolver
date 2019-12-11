@@ -7,7 +7,8 @@ public class OneLetterTextField extends TextField {
 	@Override
 	public void replaceText(int start, int end, String text) {
 		if (matches(text)) {
-			super.replaceText(start, end, text);
+			super.clear();
+			super.replaceText(0, 0, text);
 		}
 	}
 
@@ -19,7 +20,7 @@ public class OneLetterTextField extends TextField {
 	}
 
 	private boolean matches(String text) {
-		return text.isEmpty() || (getText().length() < 1) && text.matches("[1-9]");
+		return text.isEmpty() ||  text.matches("[1-9]");
 	}
 
 }
