@@ -1,13 +1,5 @@
 package sudoku;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import javafx.application.Platform;
-import javafx.concurrent.Task;
-
 public class SudokuBrain {
 	private int[][] sudokuNumbers;
 
